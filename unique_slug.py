@@ -17,17 +17,16 @@ def get_unique_slug(instance, fields=None):
         __ = list(map(lambda a: _[0] + "-" + a, _[1:]))
         __.insert(0, _[0])
     else:
-        __ = []
-        __.append(_[0])
+        __ = [_[0]]
 
     if instance.slug == _[0]: return _[0]
     try:
-        orginal_slug = Klass.objects.get(pk=instance.pk).slug
+        original_slug = Klass.objects.get(pk=instance.pk).slug
     except:
-        orginal_slug = False
+        original_slug = False
 
     for i in __:
-        if not Klass.objects.filter(slug=i).exists() or orginal_slug == i:
+        if not Klass.objects.filter(slug=i).exists() or original_slug == i:
             return i
 
     slug = _[0]
