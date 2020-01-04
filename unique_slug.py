@@ -8,7 +8,7 @@ def random_string_generator(size=10, chars=string.ascii_lowercase + string.digit
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def myslugify(value, **kwargs):
+def my_slugify(value, **kwargs):
     return slugify(value.replace(":", "-").replace("/", "-"), **kwargs)
 
 
@@ -16,8 +16,15 @@ def get_unique_slug(instance, fields=None):
     if fields is None:
         fields = ['name']
     Klass = instance.__class__
-    _ = list(map(lambda a: myslugify(getattr(instance, a) if not hasattr(instance, a) else getattr(instance, a)(),
-                                     allow_unicode=True), fields))
+    newFields = []
+    for field in fields:
+
+        try:
+            newFields.append(getattr(instance, field)())
+        except:
+            newFields.append(getattr(instance, field))
+
+    _ = list(map(lambda a: my_slugify(a, allow_unicode=True), newFields))
     if len(_) > 1:
         __ = list(map(lambda a: _[0] + "-" + a, _[1:]))
         __.insert(0, _[0])
