@@ -12,7 +12,7 @@ def get_unique_slug(instance, fields=None):
     if fields is None:
         fields = ['name']
     Klass = instance.__class__
-    _ = list(map(lambda a: slugify(getattr(instance, a), allow_unicode=True), fields))
+    _ = list(map(lambda a: slugify(getattr(instance, a) if a != '__str__' else getattr(instance, a)(), allow_unicode=True), fields))
     if len(_) > 1:
         __ = list(map(lambda a: _[0] + "-" + a, _[1:]))
         __.insert(0, _[0])
