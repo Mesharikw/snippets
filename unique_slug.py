@@ -2,7 +2,7 @@ from django.utils.text import slugify
 
 
 def my_slugify(value, **kwargs):
-    return slugify(value.replace(":", "-").replace("/", "-"), **kwargs)
+    return slugify(str(value).replace(":", "-").replace("/", "-"), **kwargs)
 
 
 def get_unique_slug(instance, fields=None):
