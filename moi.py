@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
@@ -61,8 +59,3 @@ def check_moi(civil_id, **kwargs):
         for fine in fines:
             db.insert(fine)
     total = sum(list(map(lambda a: float(a.get('fine')), db.all())))
-
-
-if __name__ == '__main__':
-    civil_id = 288120301524
-    check_moi(civil_id)
