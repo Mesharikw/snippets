@@ -17,12 +17,11 @@ def check_moi(civil_id, **kwargs):
     ft = Query()
     driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.get(url)
+    fines = list()
+    new = list()
     try:
-        # QAFinesTextCivilId
         element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "myStyle11")))
         elements = driver.find_elements_by_class_name("myStyle11")
-        fines = list()
-        new = list()
         for element in elements:
             html = element.get_attribute('innerHTML')
             fine = dict()
@@ -54,8 +53,8 @@ def check_moi(civil_id, **kwargs):
                 new.append(fine)
     finally:
         driver.quit()
-    if len(db.all()) != len(fines):
-        db.purge()
-        for fine in fines:
-            db.insert(fine)
-    total = sum(list(map(lambda a: float(a.get('fine')), db.all())))
+        if len(db.all()) != len(fines):
+            db.purge()
+            for fine in fines:
+                db.insert(fine)
+        total = sum(list(map(lambda a: float(a.get('fine')), db.all())))
