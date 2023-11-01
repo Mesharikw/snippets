@@ -15,8 +15,11 @@ class ShiftScheduler:
         if time is not None:
             self.time = time
             self.date = datetime.datetime(self.date.year, self.date.month, self.date.day, self.time.hour, self.time.minute).date()
-            if int(self.time.strftime('%H')) <= 5:
+            if int(self.time.strftime('%H')) < 6:
                 self.date -= datetime.timedelta(days=1)
+        else:
+            self.time = datetime.datetime.now().time()
+
 
     def get_shift_index(self, date):
         days_since_epoch = (date - self.EPOCH_DATE).days
@@ -31,11 +34,10 @@ class ShiftScheduler:
         return {shift_type: self.get_shift(shift_type, self.date) for shift_type in self.shift_schedule}
     
     def current_shift(self, date=None, time=None):
-        self.date = datetime.datetime.today().date() if date is None else date
-        self.time = datetime.datetime.now().time() if time is None else time
+        if date is not None:
+            self.date = date
+        if time is not None:
+            self.time = time
         current = 'night'  if (self.time.strftime('%p') == 'AM'and int(self.time.strftime('%H')) <= 5) or (self.time.strftime('%p') == 'PM' and int(self.time.strftime('%H')) >= 18)  else 'day'
-        if int(self.time.strftime('%H')) <= 5:
-            self.date -= datetime.timedelta(days=1)
+        self.__init__(self.date, self.time)
         return self.get_shift(current)
-        
-        
