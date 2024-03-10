@@ -1,0 +1,1256 @@
+<div id="mobileView" class="visible container">
+
+    <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="eocc-tab" data-bs-toggle="tab" href="#eocc" role="tab">EOCC</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="nppms-tab" data-bs-toggle="tab" href="#nppms" role="tab">NPP&MS</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="pms-tab" data-bs-toggle="tab" href="#pms" role="tab">P&MS</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="day-duty-tab" data-bs-toggle="tab" href="#day-duty" role="tab">Day Duty</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="others-tab" data-bs-toggle="tab" href="#others" role="tab">Others</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="mainTabsContent">
+
+        <!-- EOCC Tab Content -->
+        <div class="tab-pane fade show active" id="eocc" role="tabpanel">
+            <ul class="nav nav-tabs mt-3" id="eoccSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="eocc-a-tab" data-bs-toggle="tab" href="#eocc-a" role="tab">#A</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="eocc-b-tab" data-bs-toggle="tab" href="#eocc-b" role="tab">#B</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="eocc-c-tab" data-bs-toggle="tab" href="#eocc-c" role="tab">#C</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="eocc-d-tab" data-bs-toggle="tab" href="#eocc-d" role="tab">#D</a>
+                    </li>
+                </ul>
+            <!-- EOCC Sub-Tab Contents (like #A, #B, #C, #D) can be added below. -->
+            <div class="tab-content" id="eoccSubTabsContent">
+            <!-- EOCC #A Sub-Tab Content -->
+            <div class="tab-pane fade show active" id="eocc-a" role="tabpanel">
+                <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} A-EOCC
+                {% if  current_shift.day == 'A' %}
+            	    <span class="bg-warning p-1">[ Day ]</span>
+                {% elif  current_shift.night == 'A' %}
+                    <span class="bg-secondary p-1">[ Night ]</span>
+                {% elif  current_shift.first_off == 'A' %}
+                    <span class="bg-info p-1">[ 1st off ]</span>
+                {% elif  current_shift.second_off == 'A' %}
+                    <span class="bg-primary p-1">[ 2nd off ]</span>
+                {% endif %}</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Designation</th>
+                            <th>Name</th>
+                            <th>Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CONTROLLER I</td>
+                            <td>
+                                {% for key,value in A_SHIFT.items %}
+                                    {% if key == 'controller-i' %}
+                                        {% for employee in value %}
+                                            <div class="row">
+                                                <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ controllers_i_A }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR I</td>
+                            <td>
+                            {% for key,value in A_SHIFT.items %}
+                                {% if key == 'operator-i-cocc' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }} <small>{% if employee.designation_operation == 1 %}(FILL){% elif employee.designation_operation == 2 %}(LDG){% endif %} </small></a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_i_A }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR II</td>
+                            <td>
+                            {% for key,value in A_SHIFT.items %}
+                                {% if key == 'operator-ii-cocc' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_ii_A }}</td>
+                        </tr>
+                        <tr>
+                            <td>FIELD OPER. I</td>
+                            <td>
+                            {% for key,value in A_SHIFT.items %}
+                                {% if key == 'field-operator-i' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ fields_i_A }}</td>
+                        </tr>
+                        <tr>
+                            <td>FIELD OPER. II</td>
+                            <td>
+                            {% for key,value in A_SHIFT.items %}
+                                {% if key == 'field-operator-ii' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ fields_ii_A }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- EOCC #B Sub-Tab Content -->
+            <div class="tab-pane fade" id="eocc-b" role="tabpanel">
+                <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} B-EOCC
+                {% if  current_shift.day == 'B' %}
+            	    <span class="bg-warning p-1">[ Day ]</span>
+                {% elif  current_shift.night == 'B' %}
+                    <span class="bg-secondary p-1">[ Night ]</span>
+                {% elif  current_shift.first_off == 'B' %}
+                    <span class="bg-info p-1">[ 1st off ]</span>
+                {% elif  current_shift.second_off == 'B' %}
+                    <span class="bg-primary p-1">[ 2nd off ]</span>
+                {% endif %}
+                            </th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Designation</th>
+                            <th>Name</th>
+                            <th>Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CONTROLLER I</td>
+                            <td>
+                                {% for key,value in B_SHIFT.items %}
+                                    {% if key == 'controller-i' %}
+                                        {% for employee in value %}
+                                            <div class="row">
+                                                <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ controllers_i_B }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR I</td>
+                            <td>
+                            {% for key,value in B_SHIFT.items %}
+                                {% if key == 'operator-i-cocc' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }} <small>{% if employee.designation_operation == 1 %}(FILL){% elif employee.designation_operation == 2 %}(LDG){% endif %} </small></a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_i_B }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR II</td>
+                            <td>
+                            {% for key,value in B_SHIFT.items %}
+                                {% if key == 'operator-ii-cocc' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_ii_B }}</td>
+                        </tr>
+                        <tr>
+                            <td>FIELD OPER. I</td>
+                            <td>
+                            {% for key,value in B_SHIFT.items %}
+                                {% if key == 'field-operator-i' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ fields_i_B }}</td>
+                        </tr>
+                        <tr>
+                            <td>FIELD OPER. II</td>
+                            <td>
+                            {% for key,value in B_SHIFT.items %}
+                                {% if key == 'field-operator-ii' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ fields_ii_B }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- EOCC #C Sub-Tab Content -->
+            <div class="tab-pane fade" id="eocc-c" role="tabpanel">
+                <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} C-EOCC
+                {% if  current_shift.day == 'C' %}
+            	    <span class="bg-warning p-1">[ Day ]</span>
+                {% elif  current_shift.night == 'C' %}
+                    <span class="bg-secondary p-1">[ Night ]</span>
+                {% elif  current_shift.first_off == 'C' %}
+                    <span class="bg-info p-1">[ 1st off ]</span>
+                {% elif  current_shift.second_off == 'C' %}
+                    <span class="bg-primary p-1">[ 2nd off ]</span>
+                {% endif %}
+                            </th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Designation</th>
+                            <th>Name</th>
+                            <th>Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CONTROLLER I</td>
+                            <td>
+                                {% for key,value in C_SHIFT.items %}
+                                    {% if key == 'controller-i' %}
+                                        {% for employee in value %}
+                                            <div class="row">
+                                                <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ controllers_i_C }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR I</td>
+                            <td>
+                            {% for key,value in C_SHIFT.items %}
+                                {% if key == 'operator-i-cocc' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }} <small>{% if employee.designation_operation == 1 %}(FILL){% elif employee.designation_operation == 2 %}(LDG){% endif %} </small></a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_i_C }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR II</td>
+                            <td>
+                            {% for key,value in C_SHIFT.items %}
+                                {% if key == 'operator-ii-cocc' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_ii_C }}</td>
+                        </tr>
+                        <tr>
+                            <td>FIELD OPER. I</td>
+                            <td>
+                            {% for key,value in C_SHIFT.items %}
+                                {% if key == 'field-operator-i' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ fields_i_C }}</td>
+                        </tr>
+                        <tr>
+                            <td>FIELD OPER. II</td>
+                            <td>
+                            {% for key,value in C_SHIFT.items %}
+                                {% if key == 'field-operator-ii' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ fields_ii_C }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- EOCC #D Sub-Tab Content -->
+            <div class="tab-pane fade" id="eocc-d" role="tabpanel">
+                <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} D-EOCC
+                 {% if  current_shift.day == 'D' %}
+            	    <span class="bg-warning p-1">[ Day ]</span>
+                {% elif  current_shift.night == 'D' %}
+                    <span class="bg-secondary p-1">[ Night ]</span>
+                {% elif  current_shift.first_off == 'D' %}
+                    <span class="bg-info p-1">[ 1st off ]</span>
+                {% elif  current_shift.second_off == 'D' %}
+                    <span class="bg-primary p-1">[ 2nd off ]</span>
+                {% endif %}
+                        </th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Designation</th>
+                            <th>Name</th>
+                            <th>Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CONTROLLER I</td>
+                            <td>
+                                {% for key,value in D_SHIFT.items %}
+                                    {% if key == 'controller-i' %}
+                                        {% for employee in value %}
+                                            <div class="row">
+                                                <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ controllers_i_D }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR I</td>
+                            <td>
+                            {% for key,value in D_SHIFT.items %}
+                                {% if key == 'operator-i-cocc' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }} <small>{% if employee.designation_operation == 1 %}(FILL){% elif employee.designation_operation == 2 %}(LDG){% endif %} </small></a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_i_D }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR II</td>
+                            <td>
+                            {% for key,value in D_SHIFT.items %}
+                                {% if key == 'operator-ii-cocc' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_ii_D }}</td>
+                        </tr>
+                        <tr>
+                            <td>FIELD OPER. I</td>
+                            <td>
+                            {% for key,value in D_SHIFT.items %}
+                                {% if key == 'field-operator-i' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ fields_i_D }}</td>
+                        </tr>
+                        <tr>
+                            <td>FIELD OPER. II</td>
+                            <td>
+                            {% for key,value in D_SHIFT.items %}
+                                {% if key == 'field-operator-ii' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ fields_ii_D }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+
+        <!-- NPP&MS Tab Content -->
+        <div class="tab-pane fade" id="nppms" role="tabpanel">
+            <ul class="nav nav-tabs mt-3" id="nppmsSubTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="nppms-a-tab" data-bs-toggle="tab" href="#nppms-a" role="tab">#A</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="nppms-b-tab" data-bs-toggle="tab" href="#nppms-b" role="tab">#B</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="nppms-c-tab" data-bs-toggle="tab" href="#nppms-c" role="tab">#C</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="nppms-d-tab" data-bs-toggle="tab" href="#nppms-d" role="tab">#D</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="nppmsSubTabsContent">
+                <!-- NPP&MS #A Sub-Tab Content -->
+                <div class="tab-pane fade show active" id="nppms-a" role="tabpanel">
+                    <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} A-NPP&MS</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Designation</th>
+                            <th>Name</th>
+                            <th>Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CONTROLLER</td>
+                            <td>
+                                {% for key,value in A_SHIFT.items %}
+                                    {% if key == 'controller' %}
+                                        {% for employee in value %}
+                                            <div class="row">
+                                                <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ controllers_A }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR I</td>
+                            <td>
+                            {% for key,value in A_SHIFT.items %}
+                                {% if key == 'operator-i-npp' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_i_npp_A }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR II</td>
+                            <td>
+                            {% for key,value in A_SHIFT.items %}
+                                {% if key == 'operator-ii-npp' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_ii_npp_A }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                </div>
+
+                <!-- NPP&MS #B Sub-Tab Content -->
+                <div class="tab-pane fade" id="nppms-b" role="tabpanel">
+                    <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} B-NPP&MS</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Designation</th>
+                            <th>Name</th>
+                            <th>Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CONTROLLER</td>
+                            <td>
+                                {% for key,value in B_SHIFT.items %}
+                                    {% if key == 'controller' %}
+                                        {% for employee in value %}
+                                            <div class="row">
+                                                <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ controllers_B }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR I</td>
+                            <td>
+                            {% for key,value in B_SHIFT.items %}
+                                {% if key == 'operator-i-npp' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_i_npp_B }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR II</td>
+                            <td>
+                            {% for key,value in B_SHIFT.items %}
+                                {% if key == 'operator-ii-npp' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_ii_npp_B }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                </div>
+
+                <!-- NPP&MS #C Sub-Tab Content -->
+                <div class="tab-pane fade" id="nppms-c" role="tabpanel">
+                    <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} C-NPP&MS</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Designation</th>
+                            <th>Name</th>
+                            <th>Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CONTROLLER</td>
+                            <td>
+                                {% for key,value in C_SHIFT.items %}
+                                    {% if key == 'controller' %}
+                                        {% for employee in value %}
+                                            <div class="row">
+                                                <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ controllers_C }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR I</td>
+                            <td>
+                            {% for key,value in C_SHIFT.items %}
+                                {% if key == 'operator-i-npp' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_i_npp_C }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR II</td>
+                            <td>
+                            {% for key,value in C_SHIFT.items %}
+                                {% if key == 'operator-ii-npp' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_ii_npp_C }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                </div>
+
+                <!-- NPP&MS #D Sub-Tab Content -->
+                <div class="tab-pane fade" id="nppms-d" role="tabpanel">
+                    <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} D-NPP&MS</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Designation</th>
+                            <th>Name</th>
+                            <th>Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CONTROLLER</td>
+                            <td>
+                                {% for key,value in D_SHIFT.items %}
+                                    {% if key == 'controller' %}
+                                        {% for employee in value %}
+                                            <div class="row">
+                                                <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ controllers_D }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR I</td>
+                            <td>
+                            {% for key,value in D_SHIFT.items %}
+                                {% if key == 'operator-i-npp' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_i_npp_D }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR II</td>
+                            <td>
+                            {% for key,value in D_SHIFT.items %}
+                                {% if key == 'operator-ii-npp' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_ii_npp_D }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- P&MS Tab Content -->
+        <div class="tab-pane fade" id="pms" role="tabpanel">
+            <ul class="nav nav-tabs mt-3" id="pmsSubTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="pms-a-tab" data-bs-toggle="tab" href="#pms-a" role="tab">#A</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="pms-b-tab" data-bs-toggle="tab" href="#pms-b" role="tab">#B</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="pms-c-tab" data-bs-toggle="tab" href="#pms-c" role="tab">#C</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="pms-d-tab" data-bs-toggle="tab" href="#pms-d" role="tab">#D</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="pmsSubTabsContent">
+                <!-- P&MS #A Sub-Tab Content -->
+                <div class="tab-pane fade show active" id="pms-a" role="tabpanel">
+                    <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} A-P&MS</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Designation</th>
+                            <th>Name</th>
+                            <th>Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>OPERATOR I</td>
+                            <td>
+                                {% for key,value in A_SHIFT.items %}
+                                    {% if key == 'operator-i-pms' %}
+                                        {% for employee in value %}
+                                            <div class="row">
+                                                <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ operators_i_pms_A }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR II</td>
+                            <td>
+                            {% for key,value in A_SHIFT.items %}
+                                {% if key == 'operator-ii-pms' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_ii_pms_A }}</td>
+                        </tr>
+                        <tr>
+                            <td>FIELD OPER. I</td>
+                            <td>
+                            {% for key,value in A_SHIFT.items %}
+                                {% if key == 'field-operator-i-pms' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ fields_i_pms_A }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                </div>
+
+                <!-- P&MS #B Sub-Tab Content -->
+                <div class="tab-pane fade" id="pms-b" role="tabpanel">
+                    <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} B-P&MS</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Designation</th>
+                            <th>Name</th>
+                            <th>Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>OPERATOR I</td>
+                            <td>
+                                {% for key,value in B_SHIFT.items %}
+                                    {% if key == 'operator-i-pms' %}
+                                        {% for employee in value %}
+                                            <div class="row">
+                                                <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ operators_i_pms_B }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR II</td>
+                            <td>
+                            {% for key,value in B_SHIFT.items %}
+                                {% if key == 'operator-ii-pms' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_ii_pms_B }}</td>
+                        </tr>
+                        <tr>
+                            <td>FIELD OPER. I</td>
+                            <td>
+                            {% for key,value in B_SHIFT.items %}
+                                {% if key == 'field-operator-i-pms' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ fields_i_pms_B }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                </div>
+
+                <!-- P&MS #C Sub-Tab Content -->
+                <div class="tab-pane fade" id="pms-c" role="tabpanel">
+                    <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} C-P&MS</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Designation</th>
+                            <th>Name</th>
+                            <th>Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>OPERATOR I</td>
+                            <td>
+                                {% for key,value in C_SHIFT.items %}
+                                    {% if key == 'operator-i-pms' %}
+                                        {% for employee in value %}
+                                            <div class="row">
+                                                <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ operators_i_pms_C }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR II</td>
+                            <td>
+                            {% for key,value in C_SHIFT.items %}
+                                {% if key == 'operator-ii-pms' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_ii_pms_C }}</td>
+                        </tr>
+                        <tr>
+                            <td>FIELD OPER. I</td>
+                            <td>
+                            {% for key,value in C_SHIFT.items %}
+                                {% if key == 'field-operator-i-pms' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ fields_i_pms_C }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                </div>
+
+                <!-- P&MS #D Sub-Tab Content -->
+                <div class="tab-pane fade" id="pms-d" role="tabpanel">
+                    <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} D-P&MS</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Designation</th>
+                            <th>Name</th>
+                            <th>Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>OPERATOR I</td>
+                            <td>
+                                {% for key,value in D_SHIFT.items %}
+                                    {% if key == 'operator-i-pms' %}
+                                        {% for employee in value %}
+                                            <div class="row">
+                                                <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ operators_i_pms_D }}</td>
+                        </tr>
+                        <tr>
+                            <td>OPERATOR II</td>
+                            <td>
+                            {% for key,value in D_SHIFT.items %}
+                                {% if key == 'operator-ii-pms' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ operators_ii_pms_D }}</td>
+                        </tr>
+                        <tr>
+                            <td>FIELD OPER. I</td>
+                            <td>
+                            {% for key,value in D_SHIFT.items %}
+                                {% if key == 'field-operator-i-pms' %}
+                                    {% for employee in value %}
+                                        <div class="row">
+                                            <div class="col {% if employee.reason == 'Ag.' %} text-danger {% elif employee.reason == 'Fam.' %} text-info{% endif %}"><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }} {{ employee.employee.short_name }}</a></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ fields_i_pms_D }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+        <!-- Day Duty Tab Content -->
+        <div class="tab-pane fade" id="day-duty" role="tabpanel">
+            <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="3">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} DAY DUTY</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>KOC#</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for employee in DAY_SHIFT %}
+                        <tr>
+                        <td><a href="{{ employee.employee.get_absolute_url }}">{{ employee.employee.kocid }}</a></td>
+                        <td><a href="{{ employee.employee.get_absolute_url }}">{{employee.employee.kocid}} {{ employee.employee.short_name }}</a></td>
+                        <td>{{ employee.new_designation }}</td>
+                        </tr>
+            {% endfor %}
+
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+
+        </div>
+
+        <!-- Others Tab Content -->
+        <div class="tab-pane fade" id="others" role="tabpanel">
+            <ul class="nav nav-tabs mt-3" id="othersSubTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="others-vacation-tab" data-bs-toggle="tab" href="#others-vacation" role="tab">Vacation</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="others-course-tab" data-bs-toggle="tab" href="#others-course" role="tab">Course</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="others-military-tab" data-bs-toggle="tab" href="#others-military" role="tab">Military Service</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="othersSubTabsContent">
+                <!-- Others Vacation Sub-Tab Content -->
+                <div class="tab-pane fade show active" id="others-vacation" role="tabpanel">
+                    <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="5">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} VACATION</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Name</th>
+                            <th>Begins</th>
+                            <th>Return</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for employee in LEAVES_SHIFT %}
+                        <tr>
+                        <td><a href="{{ employee.0.employee.get_absolute_url }}">{{ employee.0.employee.kocid }} {{ employee.0.employee.short_name }}</a></td>
+                        <td>{% if employee.0.to_shift.duty != "V" and employee.0.day_off %}{{ employee.0.day_off|date:"d/m" }}{% else %}{{ employee.1|date:"d/m" }}{% endif %}</td>
+                        <td>{% if employee.0.to_shift.duty != "V" %}{{ employee.0.to_shift }} {{ employee.2|date:"d/m" }}  <code>{{ employee.0.at }}</code>
+       {% else %}{% if employee.2 %}{{ employee.2|date:"d/m" }}{% endif %}&nbsp;{% endif %}</td>
+                        <td>{% if employee.0.to_shift.duty != "V" %}
+          	Day/OFF{% else %}{{ employee.0.to_shift }}
+          {% endif %}</td>
+                        </tr>
+            {% endfor %}
+
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                </div>
+
+                <!-- Others Course Sub-Tab Content -->
+                <div class="tab-pane fade" id="others-course" role="tabpanel">
+                    <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="5">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} COURSE </th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>Begins</th>
+                            <th>Return</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for employee in COURSE_SHIFT %}
+                        <tr>
+                            <td><a href="{{ employee.0.employee.get_absolute_url }}">{{ employee.0.employee.kocid }}</a> <a href="{{ employee.0.employee.get_absolute_url }}">{{ employee.0.employee.short_name }}</a></td>
+                            <td>{{ employee.0.new_designation }}</td>
+                            <td>{{ employee.1|date:"d/m" }}</td>
+                            <td>{% if employee.2 %}{{ employee.2|date:"d/m" }}{% else %}&nbsp;{% endif %}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                        <td colspan="4"> No data records.</td>
+                        </tr>
+                    {% endfor %}
+
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+
+                    <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="5">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} EXTERNAL COURSE </th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>Begins</th>
+                            <th>Return</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for employee in COURSE_EXTERNAL %}
+                        <tr>
+                            <td><a href="{{ employee.0.employee.get_absolute_url }}">{{ employee.0.employee.kocid }}</a> <a href="{{ employee.0.employee.get_absolute_url }}">{{ employee.0.employee.short_name }}</a></td>
+                            <td>{{ employee.0.new_designation }}</td>
+                            <td>{{ employee.1|date:"d/m" }}</td>
+                            <td>{% if employee.2 %}{{ employee.2|date:"d/m" }}{% else %}&nbsp;{% endif %}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                        <td colspan="4"> No data records.</td>
+                        </tr>
+                    {% endfor %}
+
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                </div>
+
+                <!-- Others Military Service Sub-Tab Content -->
+                <div class="tab-pane fade" id="others-military" role="tabpanel">
+                    <table class="table table-hover table-bordered table-responsive-sm mt-2">
+                    <thead class="table table-responsive table-dark table-striped">
+                        <tr class="text-center">
+                            <th colspan="5">Date: {% if request.GET.target_date %}
+                                  {{ request.GET.target_date }}
+                                      {% else  %}
+                                      {% now "d/m/Y" %}
+                                  {% endif %} Military</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th>KOC#</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>Begins</th>
+                            <th>Return</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for employee in MILITARY_SERVICE %}
+                        <tr>
+                            <td><a href="{{ employee.0.employee.get_absolute_url }}">{{ employee.0.employee.kocid }}</a></td>
+                            <td><a href="{{ employee.0.employee.get_absolute_url }}">{{ employee.0.employee.short_name }}</a></td>
+                            <td>{{ employee.0.new_designation }}</td>
+                            <td>{{ employee.1|date:"d/m" }}</td>
+                            <td>{% if employee.2 %}{{ employee.2|date:"d/m" }}{% else %}&nbsp;{% endif %}</td>
+                        </tr>
+                    {% endfor %}
+
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    </div>
